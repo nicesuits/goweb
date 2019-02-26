@@ -6,7 +6,7 @@ type (
 	// Thread struct
 	Thread struct {
 		ID        int
-		Uuid      string
+		UUID      string
 		Topic     string
 		UserID    int
 		CreatedAt time.Time
@@ -14,7 +14,7 @@ type (
 	// Post struct
 	Post struct {
 		ID        int
-		Uuid      string
+		UUID      string
 		Body      string
 		UserID    int
 		ThreadID  int
@@ -24,16 +24,16 @@ type (
 
 // CreatedAtDate returns a formatted datetime string
 func (thread *Thread) CreatedAtDate() string {
-	return thread.CreatedAt(Format("Jan 2, 2006 at 3:00pm"))
+	return thread.CreatedAt.Format("Jan 2, 2006 at 3:00pm")
 }
 
 // CreatedAtDate returns a formatted datetime string
 func (post *Post) CreatedAtDate() string {
-	return thread.CreatedAt(Format("Jan 2, 2006 at 3:00pm"))
+	return post.CreatedAt.Format("Jan 2, 2006 at 3:00pm")
 }
 
 // NumReplies returns the number of posts in a thread
-func (thread *Thread) CreatedAtDate() (count int) {
+func (thread *Thread) NumReplies() (count int) {
 	db := db()
 	defer db.Close()
 	rows, err := db.Query("SELECT count(*) FROM posts WHERE thread_id = $1", thread.ID)
@@ -59,7 +59,7 @@ func (user *User) CreateThread(topic string) (conv Thread, err error) {
 		return
 	}
 	defer stmt.Close()
-	err = stmt.QueryRow(createUUID(), topic, user.ID, time.Now()).Scan(&conv.ID, &conv.Uuid, &conv.Topic, &conv.UserID, &conv.CreatedAt)
+	err = stmt.QueryRow(createUUID(), topic, user.ID, time.Now()).Scan(&conv.ID, &conv.UUID, &conv.Topic, &conv.UserID, &conv.CreatedAt)
 	if err != nil {
 		return
 	}
@@ -76,7 +76,7 @@ func (user *User) CreatePost(conv Thread, body string) (post Post, err error) {
 		return
 	}
 	defer stmt.Close()
-	err = stmt.QueryRow(createUUID(), body, user.ID, conv.ID, time.Now()).Scan(&post.ID, &post.Uuid, &post.Body, &post.UserID, &post.ThreadID, &post.CreatedAt)
+	err = stmt.QueryRow(createUUID(), body, user.ID, conv.ID, time.Now()).Scan(&post.ID, &post.UUID, &post.Body, &post.UserID, &post.ThreadID, &post.CreatedAt)
 	if err != nil {
 		return
 	}
@@ -93,7 +93,7 @@ func Threads() (threads []Thread, err error) {
 	}
 	for rows.Next() {
 		conv := Thread{}
-		if err = rows.Scan(&conv.ID, &conv.Uuid, &conv.Topic, &conv.UserID, &conv.CreatedAt); err != nil {
+		if err = rows.Scan(&conv.ID, &conv.UUID, &conv.Topic, &conv.UserID, &conv.CreatedAt); err != nil {
 			return
 		}
 		threads = append(threads, conv)
@@ -107,7 +107,7 @@ func ThreadByUUID(uuid string) (conv Thread, err error) {
 	db := db()
 	defer db.Close()
 	conv = Thread{}
-	err = db.Query("SELECT id, uuid, topic, user_id, created_at FROM threads WHERE uuid = $1", uuid).Scan(&conv.ID, &conv.Uuid, &conv.Topic, &conv.UserID, &conv.CreatedAt)
+	err = db.QueryRow("SELECT id, uuid, topic, user_id, created_at FROM threads WHERE uuid = $1", uuid).Scan(&conv.ID, &conv.UUID, &conv.Topic, &conv.UserID, &conv.CreatedAt)
 	return
 }
 
@@ -116,7 +116,7 @@ func (thread *Thread) User() (user User) {
 	db := db()
 	defer db.Close()
 	user = User{}
-	db.QueryRow("SELECT id, uuid, name, email, created_at FROM users WHERE id = $1", thread.UserID).Scan(&user.ID, &user.Uuid, &user.Name, &user.Email, &user.CreatedAt)
+	db.QueryRow("SELECT id, uuid, name, email, created_at FROM users WHERE id = $1", thread.UserID).Scan(&user.ID, &user.UUID, &user.Name, &user.Email, &user.CreatedAt)
 	return
 }
 
@@ -125,5 +125,6 @@ func (post *Post) User() (user User) {
 	db := db()
 	defer db.Close()
 	user = User{}
-	db.QueryRow("SELECT id, uuid, name, email, created_at FROM users WHERE id = $1", post.UserID).Scan(&user.ID, &user.Uuid, &user.Name, &user.Email, &user.CreatedAt)
+	db.QueryRow("SELECT id, uuid, name, email, created_at FROM users WHERE id = $1", post.UserID).Scan(&user.ID, &user.UUID, &user.Name, &user.Email, &user.CreatedAt)
+	return
 }
