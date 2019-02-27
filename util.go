@@ -25,7 +25,7 @@ var config Configuration
 var logger *log.Logger
 
 func p(a ...interface{}) {
-	fmt.Println(a)
+	fmt.Println(a...)
 }
 
 func init() {
