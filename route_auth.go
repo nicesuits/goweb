@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 func authenticate(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
@@ -17,4 +20,20 @@ func authenticate(w http.ResponseWriter, r *http.Request) {
 	} else {
 		http.Redirect(w, r, "/login", 302)
 	}
+}
+
+func login(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("login")
+}
+
+func logout(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("logout")
+}
+
+func signup(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("signup")
+}
+
+func signupAccount(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("signup_account")
 }

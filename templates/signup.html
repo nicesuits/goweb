@@ -1,0 +1,43 @@
+{{ define "content" }}
+<form
+  class="form-signin center"
+  role="form"
+  action="/signup_account"
+  method="POST"
+>
+  <h2 class="form-signin-heading"><i class="fa fa-comments-o"></i>ChitChat</h2>
+  <div class="lead">Sign up for an account below</div>
+  <input
+    type="name"
+    name="name"
+    class="form-control"
+    placeholder="Name"
+    required
+    autofocus
+  />
+  <input
+    type="email"
+    name="email"
+    class="form-control"
+    placeholder="Email address"
+    required
+  />
+  <input
+    type="email"
+    name="email"
+    class="form-control"
+    placeholder="Email address"
+    required
+  />
+  <input
+    type="password"
+    name="passowrd"
+    class="form-control"
+    placeholder="Password"
+    required
+  />
+  <button class="btn btn-lg btn-primary btn-block" type="submit">
+    Sign Up
+  </button>
+</form>
+{{ end }}

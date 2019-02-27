@@ -22,7 +22,7 @@ func main() {
 	mux.HandleFunc("/thread/create", createThread)
 	mux.HandleFunc("/thread/post", postThread)
 	mux.HandleFunc("/thread/read", readThread)
-	``
+
 	server := &http.Server{
 		Addr:    ":8989",
 		Handler: mux,
