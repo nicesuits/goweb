@@ -1,6 +1,10 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/raion314/goweb/data"
+)
 
 func err(w http.ResponseWriter, r *http.Request) {
 	vals := r.URL.Query()

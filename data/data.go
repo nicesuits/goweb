@@ -6,10 +6,13 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+
+	// postgres driver side effects
+	_ "github.com/lib/pq"
 )
 
 func db() (database *sql.DB) {
-	database, err := sql.Open("postgress", "dbname=chitchat sslmode=disable")
+	database, err := sql.Open("postgres", "dbname=chitchatdb sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,0 +1,6 @@
+{
+  "Address": ":8081",
+  "ReadTimeout": 10,
+  "WriteTimeout": 600,
+  "Static": "public"
+}

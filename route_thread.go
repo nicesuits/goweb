@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/raion314/goweb/data"
 )
 
 func newThread(w http.ResponseWriter, r *http.Request) {
@@ -19,7 +21,7 @@ func createThread(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w, r, "/login", 302)
 	} else {
-		err = request.ParseForm()
+		err = r.ParseForm()
 		if err != nil {
 			danger(err, "Cannot parse form")
 		}
