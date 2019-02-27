@@ -12,7 +12,7 @@ import (
 )
 
 func db() (database *sql.DB) {
-	database, err := sql.Open("postgres", "dbname=chitchat sslmode=disable")
+	database, err := sql.Open("postgres", "dbname=chitchatdb sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}
