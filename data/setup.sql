@@ -1,42 +1,48 @@
-drop table posts;
-drop table threads;
-drop table sessions;
-drop table users;
+DROP TABLE posts;
+DROP TABLE threads;
+DROP TABLE sessions;
+DROP TABLE users;
 
-create table users
-(
-  id serial primary key,
-  uuid varchar(64) not null unique,
-  name varchar(255),
-  email varchar(255) not null unique,
-  password varchar(255) not null,
-  created_at timestamp not null
-)
+CREATE DATABASE IF NOT EXISTS chitchatdb;
 
-create table sessions
+CREATE TABLE IF NOT EXISTS users
 (
-  id serial primary key,
-  uuid varchar(64) not null unique,
-  email varchar(255),
-  user_id integer references users(id),
-  created_at timestamp not null
-)
+  id SERIAL PRIMARY KEY,
+  uuid UUID NOT NULL UNIQUE,
+  name STRING(255),
+  email STRING(255) NOT NULL UNIQUE,
+  password STRING(255) NOT NULL,
+  created_at TIMESTAMP NOT NULL
+);
 
-create table threads
+CREATE TABLE IF NOT EXISTS sessions
 (
-  id serial primary key,
-  uuid varchar(64) not null unique,
-  topic text,
-  user_id integer references users(id),
-  created_at timestamp not null
-)
+  id SERIAL PRIMARY KEY,
+  uuid STRING(64) NOT NULL UNIQUE,
+  email STRING(255),
+  user_id SERIAL NOT NULL REFERENCES users(id),
+  created_at TIMESTAMP NOT NULL,
+  INDEX (user_id)
+);
 
-create table posts
+CREATE TABLE IF NOT EXISTS threads
 (
-  id serial primary key,
-  uuid varchar(64) not null unique,
-  body text,
-  user_id integer references users(id),
-  thread_id integer references threads(id),
-  created_at timestamp not null
-)
+  id SERIAL PRIMARY KEY,
+  uuid STRING(64) NOT NULL UNIQUE,
+  topic STRING,
+  user_id SERIAL NOT NULL REFERENCES users(id),
+  created_at TIMESTAMP NOT NULL,
+  INDEX (user_id)
+);
+
+CREATE TABLE IF NOT EXISTS posts
+(
+  id SERIAL PRIMARY KEY,
+  uuid STRING(64) NOT NULL UNIQUE,
+  body STRING,
+  user_id SERIAL NOT NULL REFERENCES users(id),
+  thread_id SERIAL NOT NULL REFERENCES threads(id),
+  created_at TIMESTAMP NOT NULL,
+  INDEX (user_id),
+  INDEX (thread_id)
+);
