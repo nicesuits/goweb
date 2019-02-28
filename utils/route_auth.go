@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"fmt"
@@ -7,16 +7,17 @@ import (
 	"github.com/raion314/goweb/data"
 )
 
-func authenticate(w http.ResponseWriter, r *http.Request) {
+// Authenticate comment
+func Authenticate(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	user, err := data.UserByEmail(r.PostFormValue("email"))
 	if err != nil {
-		danger(err, "Cannot find user")
+		Danger(err, "Cannot find user")
 	}
 	if user.Password == data.Encrypt(r.PostFormValue("password")) {
 		session, err := user.CreateSession()
 		if err != nil {
-			danger(err, "Cannot create session")
+			Danger(err, "Cannot create session")
 		}
 		cookie := http.Cookie{
 			Name:     "_cookie",
@@ -30,18 +31,22 @@ func authenticate(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func login(w http.ResponseWriter, r *http.Request) {
+// Login comment
+func Login(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("login")
 }
 
-func logout(w http.ResponseWriter, r *http.Request) {
+// Logout comment
+func Logout(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("logout")
 }
 
-func signup(w http.ResponseWriter, r *http.Request) {
+// Signup comment
+func Signup(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("signup")
 }
 
-func signupAccount(w http.ResponseWriter, r *http.Request) {
+// SignupAccount comment
+func SignupAccount(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("signup_account")
 }

@@ -1,12 +1,10 @@
-package main
+package utils
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 	"text/template"
 
@@ -22,32 +20,11 @@ type Configuration struct {
 }
 
 var config Configuration
-var logger *log.Logger
+var Logger *log.Logger
 
-func p(a ...interface{}) {
+// P comment
+func P(a ...interface{}) {
 	fmt.Println(a...)
-}
-
-func init() {
-	loadConfig()
-	file, err := os.OpenFile("chitchat.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalln("Failed to open log file", err)
-	}
-	logger = log.New(file, "INFO", log.Ldate|log.Ltime|log.Lshortfile)
-}
-
-func loadConfig() {
-	file, err := os.Open("config.json")
-	if err != nil {
-		log.Fatalln("Cannot open config file", err)
-	}
-	decoder := json.NewDecoder(file)
-	config = Configuration{}
-	err = decoder.Decode(&config)
-	if err != nil {
-		log.Fatalln("Cannot get configuration from file", err)
-	}
 }
 
 func errorMessage(w http.ResponseWriter, r *http.Request, msg string) {
@@ -85,21 +62,30 @@ func generateHTML(w http.ResponseWriter, data interface{}, filenames ...string) 
 	t.ExecuteTemplate(w, "layout", data)
 }
 
-func info(args ...interface{}) {
-	logger.SetPrefix("INFO")
-	logger.Println(args...)
+// Config comment
+func Config() (config Configuration) {
+	return config
 }
 
-func danger(args ...interface{}) {
-	logger.SetPrefix("ERROR")
-	logger.Println(args...)
+// Info comment
+func Info(args ...interface{}) {
+	Logger.SetPrefix("INFO")
+	Logger.Println(args...)
 }
 
-func warning(args ...interface{}) {
-	logger.SetPrefix("WARNING")
-	logger.Println(args...)
+// Danger comment
+func Danger(args ...interface{}) {
+	Logger.SetPrefix("ERROR")
+	Logger.Println(args...)
 }
 
-func version() string {
+// Warning comment
+func Warning(args ...interface{}) {
+	Logger.SetPrefix("WARNING")
+	Logger.Println(args...)
+}
+
+// Version comment
+func Version() string {
 	return "0.1.0"
 }

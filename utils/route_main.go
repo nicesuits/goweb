@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"net/http"
@@ -6,7 +6,8 @@ import (
 	"github.com/raion314/goweb/data"
 )
 
-func err(w http.ResponseWriter, r *http.Request) {
+// Err comment
+func Err(w http.ResponseWriter, r *http.Request) {
 	vals := r.URL.Query()
 	_, err := session(w, r)
 	if err != nil {
@@ -16,7 +17,8 @@ func err(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func index(w http.ResponseWriter, r *http.Request) {
+// Index comment
+func Index(w http.ResponseWriter, r *http.Request) {
 	threads, err := data.Threads()
 	if err != nil {
 		errorMessage(w, r, "Cannot get threads")
