@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"fmt"
@@ -7,7 +7,8 @@ import (
 	"github.com/raion314/goweb/data"
 )
 
-func newThread(w http.ResponseWriter, r *http.Request) {
+// NewThread comment
+func NewThread(w http.ResponseWriter, r *http.Request) {
 	_, err := session(w, r)
 	if err != nil {
 		http.Redirect(w, r, "/login", 302)
@@ -16,28 +17,30 @@ func newThread(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func createThread(w http.ResponseWriter, r *http.Request) {
+// CreateThread comment
+func CreateThread(w http.ResponseWriter, r *http.Request) {
 	sess, err := session(w, r)
 	if err != nil {
 		http.Redirect(w, r, "/login", 302)
 	} else {
 		err = r.ParseForm()
 		if err != nil {
-			danger(err, "Cannot parse form")
+			Danger(err, "Cannot parse form")
 		}
 		user, err := sess.User()
 		if err != nil {
-			danger(err, "Cannot get user from session")
+			Danger(err, "Cannot get user from session")
 		}
 		topic := r.PostFormValue("topic")
 		if _, err := user.CreateThread(topic); err != nil {
-			danger(err, "Cannot create thread")
+			Danger(err, "Cannot create thread")
 		}
 		http.Redirect(w, r, "/", 302)
 	}
 }
 
-func readThread(w http.ResponseWriter, r *http.Request) {
+// ReadThread comment
+func ReadThread(w http.ResponseWriter, r *http.Request) {
 	vals := r.URL.Query()
 	uuid := vals.Get("id")
 	thread, err := data.ThreadByUUID(uuid)
@@ -53,18 +56,19 @@ func readThread(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func postThread(w http.ResponseWriter, r *http.Request) {
+// PostThread comment
+func PostThread(w http.ResponseWriter, r *http.Request) {
 	sess, err := session(w, r)
 	if err != nil {
 		http.Redirect(w, r, "/login", 302)
 	} else {
 		err = r.ParseForm()
 		if err != nil {
-			danger(err, "Cannot parse form")
+			Danger(err, "Cannot parse form")
 		}
 		user, err := sess.User()
 		if err != nil {
-			danger(err, "Cannot get user from session")
+			Danger(err, "Cannot get user from session")
 		}
 		body := r.PostFormValue("body")
 		uuid := r.PostFormValue("uuid")
@@ -73,7 +77,7 @@ func postThread(w http.ResponseWriter, r *http.Request) {
 			errorMessage(w, r, "Cannot read thread")
 		}
 		if _, err := user.CreatePost(thread, body); err != nil {
-			danger(err, "Cannot create post")
+			Danger(err, "Cannot create post")
 		}
 		url := fmt.Sprint("/thread/read?id=", uuid)
 		http.Redirect(w, r, url, 302)
