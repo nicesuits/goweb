@@ -46,3 +46,12 @@ CREATE TABLE IF NOT EXISTS posts
   INDEX (user_id),
   INDEX (thread_id)
 );
+
+INSERT INTO chitchatdb.users
+  VALUES (1,'411146e9-0365-4830-ae7a-168fef6d57ea', 'Peter','peter@test.com','password',TIMESTAMP '2016-03-26 10:10:10-05:00');
+INSERT INTO chitchatdb.users
+  VALUES (2,'06664431-eb7b-433a-b395-a09271d1ba13', 'Stephanie','stephanie@test.com','password',TIMESTAMP '2016-04-26 10:10:10-05:00');
+INSERT INTO chitchatdb.threads
+  VALUES (1,'411146e9-0365-4830-ae7a-168fef6d57ea', 'First Thread',1,TIMESTAMP '2016-03-26 10:10:10-05:00');
+INSERT INTO chitchatdb.threads
+  VALUES (2,'06664431-eb7b-433a-b395-a09271d1ba13', 'Second Thread',2,TIMESTAMP '2016-04-26 10:10:10-05:00');
